@@ -1,0 +1,78 @@
+\subsection*{概要}
+
+
+\begin{DoxyItemize}
+\item スレーブモジュールの共通部分だけ書いたコード
+\item …を修正した、歯車モジュール専用のプログラム
+\end{DoxyItemize}
+
+\subsection*{ピン関係}
+
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ ピン番号  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 役割   }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ ピン番号  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ 役割   }\\\cline{1-2}
+\endhead
+10  &モジュール通過判定   \\\cline{1-2}
+A1  &コース接触判定   \\\cline{1-2}
+11  &D\+I\+Pスイッチbit0   \\\cline{1-2}
+12  &D\+I\+Pスイッチbit1   \\\cline{1-2}
+13  &D\+I\+Pスイッチbit2   \\\cline{1-2}
+A0  &D\+I\+Pスイッチbit3   \\\cline{1-2}
+S\+DA  &D-\/sub2番ピン(S\+DA)   \\\cline{1-2}
+S\+CL  &D-\/sub3番ピン(S\+CL)   \\\cline{1-2}
+G\+ND  &D-\/sub1番ピン   \\\cline{1-2}
+2,3,4,5  &ステッピングモータ\+X制御   \\\cline{1-2}
+6,7,8,9  &ステッピングモータ\+Y制御   \\\cline{1-2}
+\end{longtabu}
+
+
+\subsection*{ギミック}
+
+
+\begin{DoxyItemize}
+\item モジュール侵入中
+\begin{DoxyItemize}
+\item ステッピングモータを一定方向に稼働する
+\end{DoxyItemize}
+\item モジュール終端到達時
+\begin{DoxyItemize}
+\item ステッピングモータを停止する
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsection*{モジュール共通部分の処理について}
+
+
+\begin{DoxyItemize}
+\item D-\/sub関係の処理は{\ttfamily \mbox{\hyperlink{class_dsub_slave_communicator}{Dsub\+Slave\+Communicator}}}クラス内の処理で完結する
+\item {\ttfamily \mbox{\hyperlink{iraira__bo__gear__mod_8ino_a7dfd9b79bc5a37d7df40207afbc5431f}{setup()}}}内で{\ttfamily \mbox{\hyperlink{class_dsub_slave_communicator}{Dsub\+Slave\+Communicator}}}クラスのインスタンス{\ttfamily $\ast$dsub\+Slave\+Communicator}を生成する
+\item Dsub\+Slave\+Communicatorクラスは、マスタから通信開始通知を受け取ると、アクティブ状態になる
+\item アクティブ状態でなければ、モジュールは何もする必要がない
+\begin{DoxyItemize}
+\item {\ttfamily \mbox{\hyperlink{iraira__bo__gear__mod_8ino_a0b33edabd7f1c4e4a0bf32c67269be2f}{loop()}}}内の以下のコードでアクティブ状態かどうか確認している \`{}\`{}\`{}c++ bool now\+\_\+active = \mbox{\hyperlink{class_dsub_slave_communicator_a7a7d6e43b95833e698761442b0741e72}{Dsub\+Slave\+Communicator\+::is\+\_\+active()}} if(now\+\_\+active)\{ ... \`{}\`{}\`{}
+\end{DoxyItemize}
+\item D-\/sub関係処理は以下の部分で処理している 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{c++\}}
+\DoxyCodeLine{ dsubSlaveCommunicator->handle\_dsub\_event();}
+\end{DoxyCode}
+
+\begin{DoxyItemize}
+\item コース接触判定、モジュール通過判定もここで行っている
+\item この関数は定期的に呼ぶ必要がある
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\subsection*{本プログラムのマニュアルについて}
+
+
+\begin{DoxyItemize}
+\item 本プログラムは\href{http://www.doxygen.nl/index.html}{\texttt{ Doxygen}}を使ってドキュメント化しています
+\item マニュアルを見るにはプログラムダウンロード後、html/index.htmlをブラウザで開いてください 
+\end{DoxyItemize}
