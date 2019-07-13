@@ -1,4 +1,4 @@
-# iraira_bo_up_down_mod
+# iraira_bo_gear_mod
 
 ## 概要
 
